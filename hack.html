@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hacker Terminal</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+    }
+
+    #terminal {
+      padding: 20px;
+      white-space: pre-wrap;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .blinking-cursor {
+      display: inline-block;
+      width: 10px;
+      background-color: #00ff00;
+      animation: blink 1s step-start infinite;
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      50% { background-color: transparent; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="terminal"></div>
+
+  <script>
+    const terminal = document.getElementById('terminal');
+    const lines = [
+      "Initializing system...",
+      "Bypassing firewall...",
+      "Accessing secure database...",
+      "Downloading confidential files...",
+      "Injecting payload...",
+      "System breach successful.",
+      "Tracking IP location...",
+      "Location found: 🌍 Earth",
+      "Encrypting logs...",
+      "Self-destruct protocol initiated..."
+    ];
+
+    let lineIndex = 0;
+
+    function typeLine() {
+      if (lineIndex < lines.length) {
+        const line = lines[lineIndex];
+        const span = document.createElement('div');
+        terminal.appendChild(span);
+        let charIndex = 0;
+
+        const typeChar = setInterval(() => {
+          if (charIndex < line.length) {
+            span.textContent += line[charIndex++];
+            terminal.scrollTop = terminal.scrollHeight;
+          } else {
+            clearInterval(typeChar);
+            lineIndex++;
+            setTimeout(typeLine, 500);
+          }
+        }, 50);
+      } else {
+        // Show input cursor
+        const inputLine = document.createElement('div');
+        inputLine.textContent = ">>> ";
+        const cursor = document.createElement('span');
+        cursor.className = 'blinking-cursor';
+        inputLine.appendChild(cursor);
+        terminal.appendChild(inputLine);
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+    }
+
+    // Start typing
+    typeLine();
+
+    // Allow user to "type" after the auto lines
+    document.addEventListener('keydown', (e) => {
+      const inputLine = terminal.lastChild;
+      if (inputLine && inputLine.textContent.startsWith(">>> ")) {
+        if (e.key === "Backspace") {
+          inputLine.textContent = inputLine.textContent.slice(0, -1);
+        } else if (e.key.length === 1) {
+          inputLine.textContent = inputLine.textContent.slice(0, -1) + e.key;
+        }
+        // Re-append cursor
+        const cursor = document.createElement('span');
+        cursor.className = 'blinking-cursor';
+        inputLine.appendChild(cursor);
+      }
+    });
+  </script>
+
+</body>
+</html>
